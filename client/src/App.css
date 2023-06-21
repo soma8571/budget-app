@@ -1,0 +1,284 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;  
+}
+
+body {
+  font-size: 15px;
+  background-color: #002642;
+  color: #E5DADA;
+  font-family: 'Mukta', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  width: 100%;
+  height: 8rem;
+  padding: 1rem;
+  border: 1px solid gray;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border: 1px solid gray;
+  width: 50vw;
+}
+
+.userbar {
+  border: 1px solid gray;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.logoutBtnWrapper {
+  border: 1px solid wheat;
+  text-align: right;
+}
+
+.app-name {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #840032;
+}
+
+.part-one {
+  color:#E5DADA;
+}
+
+.navbar a {
+  margin: 0 1rem;
+  font-size: 1.1rem;
+}
+
+a {
+  text-decoration: none;
+  color: #E59500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  display: flex;
+  gap: 3rem;
+  padding: 1rem;
+}
+
+.errormsg {
+  color: red;
+}
+
+.main {
+  padding: 1rem;
+  min-width: 800px;
+}
+
+h1 {
+  margin: 0 0 2rem 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.1rem;
+}
+
+input {
+  background-color: greenyellow;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 5px auto;
+  width: 15rem;
+  height: 3rem;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input[type="checkbox"] {
+  margin: 0.5rem;
+  width: initial;
+  height: initial;
+}
+
+select {
+  background-color: greenyellow;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 5px 0;
+  width: 15rem;
+  height: 3rem;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  width: 15rem;
+  height: 3rem;
+  padding: 0.5rem;
+  background-color: #840032;
+  color: #E5DADA;
+  border: none;
+  border-radius: 5px;
+  margin: 1rem auto;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button:hover {
+  border: 2px solid #E5DADA;
+}
+
+button.del {
+  width: 6rem;
+  height: 2.5rem;
+  margin: 0;
+  background-color: #E5DADA;
+  color: #840032;
+  font-weight: bold;
+}
+
+button.del:hover {
+  background-color: #840032;
+  color: #E5DADA;
+  cursor: pointer;
+}
+
+button.logout {
+  padding: 0;
+  margin: 0.5rem 0;
+  width: initial;
+  height: initial;
+  text-align: right;
+  background: none;
+  color: red;
+}
+
+button.logout:hover {
+  border: initial;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-container, 
+.create-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #02040F;
+  border-radius: 1rem;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.auth-container:nth-child(2) {
+  border-top: 1px solid white;
+  margin-top: 2rem;
+}
+
+.auth-container h2 {
+  margin: 1rem;
+  text-align: center;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  text-align: center;
+}
+
+.create-item form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-item form > input, select {
+  margin-bottom: 0.8rem;
+}
+
+table.budget-items {
+  border-collapse: collapse;
+  margin: 1rem;
+}
+
+table.budget-items td {
+  padding: 1rem;
+  border: 1px solid gray;
+}
+
+table.budget-items th {
+  padding: 1rem;
+  background-color: #840032;
+  border: 1px solid gray;
+}
+
+.filterContainer {
+  padding: 1rem;
+  border: 1px solid gray;
+  border-radius: 10px;
+
+}
+
+@media screen and (max-width: 1120px) {
+
+  .wrapper {
+    flex-wrap: wrap;
+    margin: 0 auto;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .container {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  table.budget-items td, th {
+    padding: 0.6rem;
+  }
+
+}
+
+@media screen and (max-width: 700px) {
+
+  .header {
+    flex-wrap: wrap;
+    justify-content: center;
+    height: initial;
+    gap: 1rem;
+  }
+
+  .wrapper {
+    flex-wrap: wrap;
+    margin: 0 auto;
+    justify-content: center;
+    gap: 1rem;
+    width: 100vw;
+  }
+
+  div.loggedUser {
+    display: inline;
+  }
+
+  div.logoutBtnWrapper {
+    display: inline;
+    margin: 0 1rem;
+  }
+
+  
+}
