@@ -42,15 +42,19 @@ const Register = () => {
     }
 
     return (
-        <Form
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-            label="Regisztráció"
-            onSubmit={onSubmit}
-            error={error}
-        />
+        <>
+            <div className="regForm">
+                <Form
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                    label="Regisztráció"
+                    onSubmit={onSubmit}
+                    error={error}
+                />
+            </div>
+        </>
     );
 }
 
@@ -93,7 +97,14 @@ const Login = () => {
         }
     }
 
+    function displayRegister() {
+        //alert("ok");
+        const regForm = document.querySelector(".regForm");
+        regForm.classList.toggle("regFormTransition");
+    }
+
     return (
+        <>
         <Form
             username={username}
             setUsername={setUsername}
@@ -103,6 +114,8 @@ const Login = () => {
             onSubmit={onSubmit}
             error={error}
         />
+        <div style={{ textAlign: "right" }}><a onClick={displayRegister} href="#reg">Nincs még fiókja?</a></div>
+        </>
     );
 }
 

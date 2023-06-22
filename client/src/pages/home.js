@@ -238,13 +238,13 @@ export const Home = () => {
                                     <td style={{textAlign: "right" }}>{item.type === "outcome" ? currencyFormat(0 - item.amount) : currencyFormat(item.amount)}</td>
                                     <td>{typeFormatter(item.type)}</td>
                                     <td>{item.category}</td>
-                                    <td>
-                                        <button
+                                    <td className="action">
+                                        <a href="#delete"
                                             className="del"
                                             onClick={deleteItem}
                                             data-id={item._id}
                                         >Törlés
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
                                 ))}
