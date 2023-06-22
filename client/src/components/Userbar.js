@@ -24,7 +24,7 @@ function Userbar() {
           <div className="logoutBtnWrapper">
             
             <button className="logout" onClick={e => logout(e)}>
-              <i class="fa-solid fa-arrow-right-from-bracket" style={{color: "#e59500", margin: "0 0.5rem"}}></i>
+              <i className="fa-solid fa-arrow-right-from-bracket" style={{color: "#e59500", margin: "0 0.5rem"}}></i>
               Kijelentkezés
             </button>
           </div>

@@ -12,9 +12,9 @@ export const Home = () => {
     const [items, setItems] = useState([]);
     const [cookies] = useCookies(["access_token"]);
     const [deletedID, setDeletedID] = useState("");
-    const [catFilters, setCatFilters] = useState(()=> {
+    const [catFilters, setCatFilters] = useState(() => {
         return categories.map(item => {
-            return {"name": item, "visible": true }
+            return { "name": item, "visible": true }
         });
     });
     const [itemType, setItemType] = useState("both");
@@ -28,7 +28,7 @@ export const Home = () => {
         const fetchItems = async () => {
             try {
                 if (userID) {
-                    const response = await axios.get(`http://localhost:8000/items/${userID}`, {
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/items/${userID}`, {
                         headers: { "Authorization": cookies.access_token }
                     });
                     setItems(response.data);
@@ -64,7 +64,7 @@ export const Home = () => {
     function formatDate(date) {
         if (date && date.length > 10)
             return date.substr(0, 10);
-        else 
+        else
             return date;
     }
 
@@ -75,19 +75,19 @@ export const Home = () => {
         if (choice) {
             const itemID = e.target.dataset.id;
             try {
-                axios.delete(`http://localhost:8000/items/${itemID}`);
+                axios.delete(`${process.env.REACT_APP_API_URL}/items/${itemID}`);
                 setDeletedID(itemID);
             } catch (err) {
                 console.log(err);
             }
         }
         return;
-        
+
     }
 
     function applyFilters() {
         let where_category = "";
-    
+
         //Végigiterálunk a kategória szűrők tömbjén és az értékek alapján
         //összeállítjuk a lekérdezéshez szükséges kartakterláncot
         catFilters.forEach(filter => {
@@ -95,12 +95,12 @@ export const Home = () => {
                 where_category += `item.category === '${filter.name}' || `;
             }
         });
-        
-        if (where_category !== "") 
+
+        if (where_category !== "")
             //ciklus után az 4 utolsó karakter levágása
-           where_category = `(${where_category.slice(0, -4)})`;
-           
-        
+            where_category = `(${where_category.slice(0, -4)})`;
+
+
         let where = "";
         //az aktuális típus alapján beállítjuk a típusra vonatkozó szűrési feltételt
         switch (itemType) {
@@ -115,7 +115,7 @@ export const Home = () => {
                 //ha azoban ez üres (minden checkbox false), akkor egyszerűen kizárjuk mindkét típust
                 if (where_category === "")
                     where = "(item.type !== 'income' && item.type !== 'outcome')";
-                else 
+                else
                     where = where_category + " && (item.type === 'outcome')";
                 break;
 
@@ -126,26 +126,26 @@ export const Home = () => {
                 //ha minden kategória szűrő false, akkor viszont csak a bevételek jelenjenek meg
                 if (where_category === "")
                     where = "item.type === 'income'";
-                else 
+                else
                     where = `((${where_category}) || (item.type === 'income'))`;
                 break;
         }
 
         //Dátum szűrő
         where += ` && (item.date >= '${dateFilter[0]}' && item.date <= '${dateFilter[1]}')`;
-        console.log(where);
+        //console.log(where);
 
         const filtered = items.filter(item => eval(where));
         sorting(filtered);
         setFilteredItems(filtered);
-     }
-     
+    }
+
 
     //Calculate the sum of items
     function getItemsSum() {
         const total = filteredItems.reduce((sum, current) =>
             current.type === "income" ? sum + current.amount : sum - current.amount
-        , 0);
+            , 0);
 
         return currencyFormat(total);
     }
@@ -154,10 +154,10 @@ export const Home = () => {
     function currencyFormat(value) {
         const formatter = new Intl.NumberFormat('hu-HU', {
             style: 'currency',
-            currency: 'HUF',          
+            currency: 'HUF',
             maximumFractionDigits: 0
-          });
-          return formatter.format(value);
+        });
+        return formatter.format(value);
     }
 
     //Típus formázás/fordítás
@@ -191,8 +191,8 @@ export const Home = () => {
         setCatFilters(currentFilters => {
             return currentFilters.map(filter => {
                 if (filter.name === cat_name)
-                    return {...filter, visible}
-                else 
+                    return { ...filter, visible }
+                else
                     return filter;
             })
         });
@@ -211,10 +211,6 @@ export const Home = () => {
             setDateFilter([dateFilter[0], date]);
     }
 
-    useEffect(() => {
-        console.log(dateFilter);
-    }, dateFilter);
-
     //Ha bármelyik szűrő állapota megváltozik, akkor az applyFilters-el
     //frissítjük a szűrt elemeket
     useEffect(() => {
@@ -224,58 +220,64 @@ export const Home = () => {
 
     return (
         <>
-        <div className="main">
-            {cookies.access_token ?
-                (filteredItems.length > 0 ?
-                    (<><h1>Pénzügyi tételek</h1>
-                        <table className="budget-items">
-                            {getTableHeading()}
-                            <tbody>
-                                {filteredItems.map(item =>
-                                (<tr key={item._id}>
-                                    <td>{formatDate(item.date)}</td>
-                                    <td>{item.name}</td>
-                                    <td style={{textAlign: "right" }}>{item.type === "outcome" ? currencyFormat(0 - item.amount) : currencyFormat(item.amount)}</td>
-                                    <td>{typeFormatter(item.type)}</td>
-                                    <td>{item.category}</td>
-                                    <td className="action">
-                                        <a href="#delete"
-                                            className="del"
-                                            onClick={deleteItem}
-                                            data-id={item._id}
-                                        >Törlés
-                                        </a>
-                                    </td>
-                                </tr>
-                                ))}
-                                <tr>
-                                    <td colSpan={2}>Egyenleg:</td>
-                                    <td colSpan={4}>{getItemsSum()}</td>
-                                </tr>
-                            </tbody>
-                        </table></>)
+            <div className="main">
+                {cookies.access_token ?
+                    (filteredItems.length > 0 ?
+                        (<><h1>Pénzügyi tételek</h1>
+                            <table className="budget-items">
+                                {getTableHeading()}
+                                <tbody>
+                                    {filteredItems.map(item =>
+                                    (<tr key={item._id}>
+                                        <td>{formatDate(item.date)}</td>
+                                        <td>{item.name}</td>
+                                        <td style={{ textAlign: "right" }}>{item.type === "outcome" ? currencyFormat(0 - item.amount) : currencyFormat(item.amount)}</td>
+                                        <td>{typeFormatter(item.type)}</td>
+                                        <td>{item.category}</td>
+                                        <td className="action">
+                                            <a href="#delete"
+                                                className="del"
+                                                onClick={deleteItem}
+                                                data-id={item._id}
+                                            >Törlés
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    ))}
+                                    <tr>
+                                        <td colSpan={2}>Egyenleg:</td>
+                                        <td colSpan={4}>{getItemsSum()}</td>
+                                    </tr>
+                                </tbody>
+                            </table></>
+                        )
+                        :
+                        (items.length > 0 ?
+                            (<div>Nincs a beállított szűrőknek megfelelő találat.</div>)
+                            :
+                            (<div>Még nem rögzítettél tételt.</div>)
+                        )
+                    )
                     :
-                    (<div>Nincs a beállított szűrőknek megfelelő találat.</div>)
-                )
-                :
-                (<><h1>Üdvözöllek,</h1>
-                    <div>ezen alkalmazás segítségével könnyedén követheted pénzügyeidet!</div>
-                </>)}
-        </div>
-        
-        {items.length > 0 && 
-            <div className="filterContainer">
-                <Filter 
-                    catFilters={catFilters} 
-                    handleChange={handleCatFilterChange}
-                />
-                <div style={{ margin: "1.5rem 0 0 0" }}> 
-                    <TypeFilter itemType={itemType} handleTypeChange={handleTypeFilterChange} />
-                </div>
-                <div style={{ margin: "1.5rem 0 0 0" }}> 
-                    <DateFilter dates={dateFilter} handleDateChange={handleDateChange} />
-                </div>
-            </div>}
+                    (<><h1>Üdvözöllek,</h1>
+                        <div>ezen alkalmazás segítségével könnyedén követheted pénzügyeidet!</div>
+                    </>)
+                }
+            </div>
+
+            {items.length > 0 &&
+                <div className="filterContainer">
+                    <Filter
+                        catFilters={catFilters}
+                        handleChange={handleCatFilterChange}
+                    />
+                    <div style={{ margin: "1.5rem 0 0 0" }}>
+                        <TypeFilter itemType={itemType} handleTypeChange={handleTypeFilterChange} />
+                    </div>
+                    <div style={{ margin: "1.5rem 0 0 0" }}>
+                        <DateFilter dates={dateFilter} handleDateChange={handleDateChange} />
+                    </div>
+                </div>}
         </>
     );
 

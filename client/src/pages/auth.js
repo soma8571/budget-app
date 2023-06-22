@@ -19,24 +19,25 @@ const Register = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [regResult, setRegResult] = useState("");
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setRegResult("");
+        setError("");
         try {
-            await axios.post("http://localhost:8000/auth/register", {
+            await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, {
                 username,
                 password
             })
             .then(res => console.log(res));
-            alert("Registration completed! You can login.");
+            setRegResult("Sikeres regisztráció.");
             setUsername("");
             setPassword("");
 
         } catch (err) {
             setError(err.response.data.message);
             setPassword("");
-            //alert(err.response.data.message);
-            //console.error(err);
         }
 
     }
@@ -53,7 +54,9 @@ const Register = () => {
                     onSubmit={onSubmit}
                     error={error}
                 />
+                <div style={{ color: "greenyellow", textAlign: "center" }}>{regResult}</div>
             </div>
+            
         </>
     );
 }
@@ -71,7 +74,7 @@ const Login = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8000/auth/login", {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
                 username,
                 password
             });
