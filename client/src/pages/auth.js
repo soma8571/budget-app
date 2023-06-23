@@ -100,14 +100,21 @@ const Login = () => {
         }
     }
 
-    function displayRegister() {
-        //alert("ok");
+    function displayRegister(e) {
+        e.preventDefault();
         const regForm = document.querySelector(".regForm");
         regForm.classList.toggle("regFormTransition");
     }
 
     return (
         <>
+        <div id="hint">
+            Ha kipróbálnád regisztráció nélkül: 
+            <ul>
+                <li>Felhasználó: TesztUser23</li>
+                <li>Jelszó: tesztElek</li>
+            </ul>
+        </div>
         <Form
             username={username}
             setUsername={setUsername}
@@ -117,7 +124,7 @@ const Login = () => {
             onSubmit={onSubmit}
             error={error}
         />
-        <div style={{ textAlign: "right" }}><a onClick={displayRegister} href="#reg">Nincs még fiókja?</a></div>
+        <div style={{ textAlign: "right" }}><a onClick={e => displayRegister(e)} href="#reg">Nincs még fiókod?</a></div>
         </>
     );
 }

@@ -31,7 +31,7 @@ body {
   justify-content: space-between;
   align-items: flex-end;
   /* border: 1px solid gray; */
-  width: 50vw;
+  width: 60vw;
 }
 
 .userbar {
@@ -68,6 +68,35 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+#hint{
+  margin: 1rem;
+  padding: 0.8rem;
+  background-color: #E5DADA;
+  color: black;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  animation: drop 1300ms ease-out 2s forwards;
+  visibility: hidden;
+}
+
+#hint ul {
+  margin: 0.5rem;
+  list-style-type: none;
+}
+
+@keyframes drop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+    visibility: visible;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .container {
