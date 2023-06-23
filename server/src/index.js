@@ -15,8 +15,7 @@ app.use(cors());
 app.use("/auth", userRouter);
 app.use("/items", itemRouter);
 
-//const db_conn_string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_DB}.atudqdj.mongodb.net/budget?retryWrites=true&w=majority`;
-const db_conn_string = `mongodb+srv://soma8571:G9tbycXXEIgyDjzd@budget.atudqdj.mongodb.net/budget?retryWrites=true&w=majority`;
+const db_conn_string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_DB}.atudqdj.mongodb.net/budget?retryWrites=true&w=majority`;
 mongoose.connect(db_conn_string);
 
 app.listen(8000, () => console.log("SERVER STARTED!"));
