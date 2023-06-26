@@ -34,7 +34,7 @@ export const CreateItem = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8000/items", 
+            await axios.post(`${process.env.REACT_APP_API_URL}/items`, 
                 { item },
                 {headers: {"Authorization": cookies.access_token}}
             );

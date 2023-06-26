@@ -6,3 +6,4 @@ server/node_modules
 server/.env
 server/src/env-test.js
 server/src/index2.js
+server/src/cors.js
