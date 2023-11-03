@@ -18,7 +18,14 @@ export const Home = () => {
         });
     });
     const [itemType, setItemType] = useState("both");
-    const [dateFilter, setDateFilter] = useState(["2023-06-01", "2023-06-30"]);
+    const now = new Date();
+    const thisYear = now.getFullYear();
+    const filterStartDate = `${thisYear}-01-01`;
+    const filterEndDate = `${thisYear}-12-31`;
+    const [dateFilter, setDateFilter] = useState([
+      filterStartDate, 
+      filterEndDate
+   ]);
     const [filteredItems, setFilteredItems] = useState([]);
 
     const userID = useGetUserID();
@@ -217,68 +224,78 @@ export const Home = () => {
         applyFilters();
     }, [catFilters, itemType, dateFilter]);
 
+   function getTableContent() {
+      let tbody = 
+         <tbody>
+            {filteredItems.map(item =>
+               (<tr key={item._id}>
+                  <td>{formatDate(item.date)}</td>
+                  <td>{item.name}</td>
+                  <td style={{ textAlign: "right" }}>
+                     {item.type === "outcome" ? currencyFormat(0 - item.amount) : currencyFormat(item.amount)}
+                  </td>
+                  <td>{typeFormatter(item.type)}</td>
+                  <td>{item.category}</td>
+                  <td className="action">
+                     <a href="#delete"
+                        className="del"
+                        onClick={deleteItem}
+                        data-id={item._id}
+                     >Törlés
+                     </a>
+                  </td>
+               </tr>)
+            )}
+            <tr>
+               <td colSpan={2}>Egyenleg:</td>
+               <td colSpan={4}>{getItemsSum()}</td>
+            </tr>
+         </tbody>;
+      return tbody;
+   } 
+   
 
-    return (
-        <>
-            <div className="main">
-                {cookies.access_token ?
-                    (filteredItems.length > 0 ?
-                        (<><h1>Pénzügyi tételek</h1>
-                            <table className="budget-items">
-                                {getTableHeading()}
-                                <tbody>
-                                    {filteredItems.map(item =>
-                                    (<tr key={item._id}>
-                                        <td>{formatDate(item.date)}</td>
-                                        <td>{item.name}</td>
-                                        <td style={{ textAlign: "right" }}>{item.type === "outcome" ? currencyFormat(0 - item.amount) : currencyFormat(item.amount)}</td>
-                                        <td>{typeFormatter(item.type)}</td>
-                                        <td>{item.category}</td>
-                                        <td className="action">
-                                            <a href="#delete"
-                                                className="del"
-                                                onClick={deleteItem}
-                                                data-id={item._id}
-                                            >Törlés
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    ))}
-                                    <tr>
-                                        <td colSpan={2}>Egyenleg:</td>
-                                        <td colSpan={4}>{getItemsSum()}</td>
-                                    </tr>
-                                </tbody>
-                            </table></>
-                        )
-                        :
-                        (items.length > 0 ?
-                            (<div>Nincs a beállított szűrőknek megfelelő találat.</div>)
-                            :
-                            (<div>Még nem rögzítettél tételt.</div>)
-                        )
-                    )
-                    :
-                    (<><h1>Üdvözöllek,</h1>
-                        <div>ezen alkalmazás segítségével könnyedén követheted pénzügyeidet!</div>
-                    </>)
-                }
+   return (
+   <>
+      <div className="main">
+         {cookies.access_token ?
+         (filteredItems.length > 0 ?
+            (<><h1>Pénzügyi tételek</h1>
+               <table className="budget-items">
+                  {getTableHeading()}
+                  {getTableContent()}
+               </table>
+            </>
+            )
+            :
+            (items.length > 0 ?
+               (<div>Nincs a beállított szűrőknek megfelelő találat.</div>)
+               :
+               (<div>Még nem rögzítettél tételt.</div>)
+            )
+         )
+         :
+         (<><h1>Üdvözöllek,</h1>
+            <div>ezen alkalmazás segítségével könnyedén követheted pénzügyeidet!</div>
+         </>
+         )}
+      </div>
+
+      {items.length > 0 &&
+         <div className="filterContainer">
+            <Filter
+               catFilters={catFilters}
+               handleChange={handleCatFilterChange}
+            />
+            <div style={{ margin: "1.5rem 0 0 0" }}>
+               <TypeFilter itemType={itemType} handleTypeChange={handleTypeFilterChange} />
             </div>
-
-            {items.length > 0 &&
-                <div className="filterContainer">
-                    <Filter
-                        catFilters={catFilters}
-                        handleChange={handleCatFilterChange}
-                    />
-                    <div style={{ margin: "1.5rem 0 0 0" }}>
-                        <TypeFilter itemType={itemType} handleTypeChange={handleTypeFilterChange} />
-                    </div>
-                    <div style={{ margin: "1.5rem 0 0 0" }}>
-                        <DateFilter dates={dateFilter} handleDateChange={handleDateChange} />
-                    </div>
-                </div>}
-        </>
-    );
+            <div style={{ margin: "1.5rem 0 0 0" }}>
+               <DateFilter dates={dateFilter} handleDateChange={handleDateChange} />
+            </div>
+         </div>
+      }
+   </>
+);
 
 };

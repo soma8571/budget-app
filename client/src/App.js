@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar';
 import NoSuchPage from './pages/NoSuchPage';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import Footer from './components/Footer';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
         </Route>
         <Route path="*" element={<NoSuchPage />}></Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

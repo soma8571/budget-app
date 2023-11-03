@@ -32,6 +32,11 @@ router.post("/login", async (req, res) => {
 
     const user = await UserModel.findOne({ username }); //shorthand not., username: username 
 
+    //módosított szakasz
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    //res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
     if (!user) {
         return res
             .status(401)
